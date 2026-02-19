@@ -1,0 +1,6 @@
+pypengu
+pypengu-*
+*.json
+*.log
+.vscode/
+.idea/
