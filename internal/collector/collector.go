@@ -1,7 +1,7 @@
 package collector
 
 import (
-	"pypengu/internal/models"
+	"main/internal/models"
 )
 
 func CollectUsers(verbose bool) []models.UserInfo {
