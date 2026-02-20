@@ -2,7 +2,7 @@ package graph
 
 import (
 	"fmt"
-	"main/internal/models"
+	"pypengu/internal/models"
 )
 
 func BuildGraph(
