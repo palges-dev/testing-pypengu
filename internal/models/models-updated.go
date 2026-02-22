@@ -48,6 +48,8 @@ type SudoEntry struct {
 	NoPasswd bool
 	RunAs    string
 	Entry    string
+	GTFOBin  bool
+	GTFOUrl  string
 }
 
 type SuidBinary struct {

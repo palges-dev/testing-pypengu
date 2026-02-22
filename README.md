@@ -26,8 +26,7 @@ PyPengu is considered to be Properties under [AdverXarial](https://byt3n33dl3.gi
 ## Quick Start
 
 ```
-┌──(kali㉿kali)-[~]
-└─$ go build -o pypengu ./cmd/pypenguo build -o pypengu cmd/pypengu/main.go
+go build -o pypengu ./cmd/pypenguo 
 ```
 
 ## Custom Build
