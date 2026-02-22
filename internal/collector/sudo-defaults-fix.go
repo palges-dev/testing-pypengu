@@ -65,12 +65,20 @@ func runSudoLCurrent(verbose bool) []models.SudoEntry {
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		
+		if strings.HasPrefix(line, "Matching Defaults") || strings.HasPrefix(line, "Defaults entries") {
+			continue
+		}
+		
 		if strings.Contains(line, "may run the following commands") {
 			inCommandSection = true
 			continue
 		}
 		
 		if !inCommandSection || line == "" {
+			continue
+		}
+		
+		if strings.HasPrefix(line, "User ") || strings.HasPrefix(line, "Runas") || strings.HasPrefix(line, "Host") {
 			continue
 		}
 		
@@ -145,12 +153,12 @@ func parseSudoersFile(verbose bool) []models.SudoEntry {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
-		if line == "" || strings.HasPrefix(line, "#") {
+		if line == "" || strings.HasPrefix(line, "#") || strings.HasPrefix(line, "Defaults") {
 			continue
 		}
 		
 		entry := parseSudoLine(line)
-		if entry.User != "" {
+		if entry.User != "" && entry.User != "Defaults" {
 			entries = append(entries, entry)
 		}
 	}
@@ -180,12 +188,12 @@ func parseSudoersD(verbose bool) []models.SudoEntry {
 		scanner := bufio.NewScanner(file)
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
-			if line == "" || strings.HasPrefix(line, "#") {
+			if line == "" || strings.HasPrefix(line, "#") || strings.HasPrefix(line, "Defaults") {
 				continue
 			}
 			
 			entry := parseSudoLine(line)
-			if entry.User != "" {
+			if entry.User != "" && entry.User != "Defaults" {
 				entries = append(entries, entry)
 			}
 		}
@@ -197,6 +205,10 @@ func parseSudoersD(verbose bool) []models.SudoEntry {
 
 func parseSudoLine(line string) models.SudoEntry {
 	entry := models.SudoEntry{Entry: line}
+	
+	if strings.HasPrefix(line, "Defaults") {
+		return entry
+	}
 	
 	noPasswd := strings.Contains(line, "NOPASSWD")
 	entry.NoPasswd = noPasswd
