@@ -122,10 +122,15 @@ func BuildGraph(
 	}
 
 	for _, binary := range suidBinaries {
+		label := binary.Path
+		if len(binary.Path) > 20 {
+			label = binary.Path[len(binary.Path)-20:]
+		}
+		
 		node := models.Node{
 			ID:    fmt.Sprintf("binary:%s", binary.Path),
 			Type:  "binary",
-			Label: binary.Path[len(binary.Path)-20:],
+			Label: label,
 			Properties: map[string]interface{}{
 				"path":    binary.Path,
 				"owner":   binary.Owner,
@@ -216,10 +221,15 @@ func BuildGraph(
 	}
 
 	for _, cron := range cronJobs {
+		label := cron.Path
+		if len(cron.Path) > 15 {
+			label = cron.Path[len(cron.Path)-15:]
+		}
+		
 		node := models.Node{
 			ID:    fmt.Sprintf("cron:%s", cron.Path),
 			Type:  "cron",
-			Label: fmt.Sprintf("cron:%s", cron.Path[len(cron.Path)-15:]),
+			Label: label,
 			Properties: map[string]interface{}{
 				"path":     cron.Path,
 				"schedule": cron.Schedule,
